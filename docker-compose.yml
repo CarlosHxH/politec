@@ -24,7 +24,7 @@ services:
     container_name: forensic-frontend
     restart: unless-stopped
     environment:
-      - VITE_API_URL=http://api:5000
+      - VITE_API_URL=${VITE_API_URL:-http://127.0.0.1:5000}
     expose:
       - "5757"
     depends_on:

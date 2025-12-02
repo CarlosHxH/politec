@@ -92,7 +92,7 @@ function App() {
     const apiUrl = process.env.VITE_API_URL || 'http://localhost:5000'
     console.log(apiUrl)
     try {
-      const response = await axios.post(`${apiUrl}/analyze`, formData, {
+      const response = await axios.post(`http://apilaudoai.facilmova.online:5000/analyze`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },

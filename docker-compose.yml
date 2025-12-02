@@ -7,8 +7,8 @@ services:
       dockerfile: Dockerfile
     container_name: forensic-api
     restart: unless-stopped
-    ports:
-      - "5000:5000"
+    expose:
+      - "5000"
     environment:
       - GOOGLE_API_KEY=${GOOGLE_API_KEY}
       - GEMINI_MODEL_NAME=${GEMINI_MODEL_NAME:-gemini-2.5-pro}
@@ -16,23 +16,28 @@ services:
       - ./api/temp_videos:/app/temp_videos
     networks:
       - forensic-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
   frontend:
     build:
       context: ./frontend
       dockerfile: Dockerfile
+      args:
+        - VITE_API_URL=http://api:5000
     container_name: forensic-frontend
     restart: unless-stopped
-    environment:
-      - VITE_API_URL=${VITE_API_URL:-http://127.0.0.1:5000}
     expose:
       - "5757"
     depends_on:
-      - api
+      api:
+        condition: service_started
     networks:
       - forensic-network
 
 networks:
   forensic-network:
     driver: bridge
-

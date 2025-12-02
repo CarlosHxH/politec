@@ -3,7 +3,7 @@
 ## Arquitetura
 
 - **API (Backend)**: Porta interna 5000
-- **Frontend**: Porta interna 80 (Nginx com proxy para API)
+- **Frontend**: Porta interna 5757 (Nginx com proxy para API)
 
 ## Configuração no Coolify
 
@@ -16,7 +16,7 @@
 
 #### Serviço: frontend
 - **Domain**: `https://laudoai.facilmova.online` (SEM PORTA)
-- **Port**: 80
+- **Port**: 5757
 - **Expose**: Sim
 
 #### Serviço: api  
@@ -40,7 +40,7 @@ Cliente HTTPS
     ↓
 laudoai.facilmova.online (Traefik/Coolify)
     ↓
-frontend:80 (Nginx)
+frontend:5757 (Nginx)
     ↓ (/api/*)
 api:5000 (FastAPI)
 ```
@@ -49,6 +49,5 @@ api:5000 (FastAPI)
 
 - O frontend faz proxy de `/api/*` para `http://api:5000/*` internamente
 - Não configure domínio separado para a API
-- O Traefik do Coolify só precisa rotear para o frontend
+- O Traefik do Coolify só precisa rotear para o frontend:5757
 - A comunicação frontend↔API é interna via Docker network
-

@@ -89,10 +89,12 @@ function App() {
 
     const formData = new FormData()
     formData.append('file', file)
+    
+    // Use relative path for production (proxied by nginx) or env var for development
     const apiUrl = process.env.VITE_API_URL || 'http://localhost:5000'
     console.log(apiUrl)
     try {
-      const response = await axios.post(`http://apilaudoai.facilmova.online:5000/analyze`, formData, {
+      const response = await axios.post(`${apiUrl}/analyze`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },

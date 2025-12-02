@@ -7,7 +7,8 @@ import { Input } from '@/components/ui/input'
 import { Progress } from '@/components/ui/progress'
 import { Badge } from '@/components/ui/badge'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { cn } from '@/lib/utils'
+// cn utility available if needed
+// import { cn } from '@/lib/utils'
 
 interface ForensicResult {
   resultado_analise: string

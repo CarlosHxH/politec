@@ -11,7 +11,7 @@ services:
       - "5000:5000"
     environment:
       - GOOGLE_API_KEY=${GOOGLE_API_KEY}
-      - GEMINI_MODEL_NAME=${GEMINI_MODEL_NAME:-gemini-1.5-pro}
+      - GEMINI_MODEL_NAME=${GEMINI_MODEL_NAME:-gemini-2.5-pro}
     volumes:
       - ./api/temp_videos:/app/temp_videos
     networks:
@@ -23,6 +23,8 @@ services:
       dockerfile: Dockerfile
     container_name: forensic-frontend
     restart: unless-stopped
+    environment:
+      - VITE_API_URL=${VITE_API_URL:-http://127.0.0.1:5000}
     ports:
       - "80:80"
     depends_on:

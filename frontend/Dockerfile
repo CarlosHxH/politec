@@ -24,17 +24,8 @@ COPY --from=builder /app/dist /usr/share/nginx/html
 # Copy nginx configuration
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-# Configuração do nginx para SPA
-RUN echo 'server { \
-    listen 5757; \
-    root /usr/share/nginx/html; \
-    index index.html; \
-    location / { \
-        try_files $uri $uri/ /index.html; \
-    } \
-}' > /etc/nginx/conf.d/default.conf
-
 # Expose port
 EXPOSE 5757
 
 CMD ["nginx", "-g", "daemon off;"]
+

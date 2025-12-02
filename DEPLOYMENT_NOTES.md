@@ -33,21 +33,32 @@ GOOGLE_API_KEY=sua_chave_aqui
 GEMINI_MODEL_NAME=gemini-1.5-pro
 ```
 
+**Para desenvolvimento local**, crie `frontend/.env`:
+```
+VITE_API_URL=http://localhost:5000
+```
+
 ### 4. Fluxo de Requisições
 
+**Produção:**
 ```
-Cliente HTTPS
-    ↓
-laudoai.facilmova.online (Traefik/Coolify)
-    ↓
+Cliente → https://laudoai.facilmova.online
+    ↓ (Traefik/Coolify)
 frontend:5757 (Nginx)
-    ↓ (/api/*)
+    ↓ /api/* → proxy
 api:5000 (FastAPI)
+```
+
+**Desenvolvimento:**
+```
+Cliente → http://localhost:5757
+frontend → http://localhost:5000 (direto)
 ```
 
 ## Importante
 
 - O frontend faz proxy de `/api/*` para `http://api:5000/*` internamente
 - Não configure domínio separado para a API
-- O Traefik do Coolify só precisa rotear para o frontend:5757
+- O Traefik do Coolify roteia para o frontend:5757
 - A comunicação frontend↔API é interna via Docker network
+- Timeout de 10 minutos configurado para uploads grandes

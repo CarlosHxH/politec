@@ -90,18 +90,42 @@ function App() {
     const formData = new FormData()
     formData.append('file', file)
     
-    // Use /api path - nginx proxies to backend container
+    // Use environment variable or fallback to relative path
+    // Production: /api (proxied by nginx to api:5000)
+    // Development: http://localhost:5000 (direct connection)
+    const apiUrl = import.meta.env.VITE_API_URL || '/api'
+    
     try {
-      const response = await axios.post('/api/analyze', formData, {
+      const response = await axios.post(`${apiUrl}/analyze`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
+        },
+        timeout: 600000, // 10 minutes timeout for large videos
+        onUploadProgress: (progressEvent) => {
+          if (progressEvent.total) {
+            const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total)
+            setProgress(Math.min(percentCompleted * 0.3, 30)) // First 30% is upload
+          }
         },
       })
       setResult(response.data)
     } catch (err: unknown) {
       console.error(err)
-      const axiosError = err as { response?: { data?: { detail?: string } } }
-      setError(axiosError.response?.data?.detail || 'Erro ao processar o vídeo. Verifique se o backend está rodando.')
+      const axiosError = err as { response?: { data?: { detail?: string } }; code?: string; message?: string }
+      
+      let errorMessage = 'Erro ao processar o vídeo.'
+      
+      if (axiosError.code === 'ECONNABORTED') {
+        errorMessage = 'Tempo limite excedido. O vídeo pode ser muito grande.'
+      } else if (axiosError.code === 'ERR_NETWORK') {
+        errorMessage = 'Erro de conexão. Verifique se o backend está rodando.'
+      } else if (axiosError.response?.data?.detail) {
+        errorMessage = axiosError.response.data.detail
+      } else if (axiosError.message) {
+        errorMessage = axiosError.message
+      }
+      
+      setError(errorMessage)
     } finally {
       setLoading(false)
       finishProgress()

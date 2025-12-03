@@ -24,10 +24,10 @@ services:
     ports:
       - "5757:5757"
     environment:
-      - VITE_API_URL=https://apilaudoai.facilinova.online
-      - API_URL=https://apilaudoai.facilinova.online
-      - REACT_APP_API_URL=https://apilaudoai.facilinova.online
-      - NEXT_PUBLIC_API_URL=https://apilaudoai.facilinova.online
+      - VITE_API_URL=https://apilaudoai.facilmova.online
+      - API_URL=https://apilaudoai.facilmova.online
+      - REACT_APP_API_URL=https://apilaudoai.facilmova.online
+      - NEXT_PUBLIC_API_URL=https://apilaudoai.facilmova.online
     depends_on:
       - api
     networks:

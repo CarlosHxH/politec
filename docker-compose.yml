@@ -26,6 +26,8 @@ services:
     environment:
       - VITE_API_URL=https://apilaudoai.facilinova.online
       - API_URL=https://apilaudoai.facilinova.online
+      - REACT_APP_API_URL=https://apilaudoai.facilinova.online
+      - NEXT_PUBLIC_API_URL=https://apilaudoai.facilinova.online
     depends_on:
       - api
     networks:

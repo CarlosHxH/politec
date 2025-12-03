@@ -9,7 +9,7 @@ services:
     ports:
       - "5000:5000"
     environment:
-      - GOOGLE_API_KEY=${GOOGLE_API_KEY:-AIzaSyDvnNkyvsE60fJjrm90pPCYzhyUOsdKhQk}
+      - GOOGLE_API_KEY=AIzaSyDvnNkyvsE60fJjrm90pPCYzhyUOsdKhQk
       - GEMINI_MODEL_NAME=${GEMINI_MODEL_NAME:-gemini-2.5-pro}
     volumes:
       - ./api/temp_videos:/app/temp_videos

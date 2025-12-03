@@ -23,11 +23,6 @@ services:
     restart: unless-stopped
     ports:
       - "5757:5757"
-    environment:
-      - VITE_API_URL=https://apilaudoai.facilmova.online
-      - API_URL=https://apilaudoai.facilmova.online
-      - REACT_APP_API_URL=https://apilaudoai.facilmova.online
-      - NEXT_PUBLIC_API_URL=https://apilaudoai.facilmova.online
     depends_on:
       - api
     networks:

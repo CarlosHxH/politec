@@ -90,13 +90,9 @@ function App() {
     const formData = new FormData()
     formData.append('file', file)
     
-    // Use environment variable or fallback to relative path
-    // Production: /api (proxied by nginx to api:5000)
-    // Development: http://localhost:5000 (direct connection)
-    const apiUrl = import.meta.env.VITE_API_URL || '/api'
-    
+    // Always use /api - nginx proxies to api:5000 inside Docker network
     try {
-      const response = await axios.post(`${apiUrl}/analyze`, formData, {
+      const response = await axios.post('/api/analyze', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },

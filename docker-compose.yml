@@ -6,29 +6,47 @@ services:
       context: ./api
       dockerfile: Dockerfile
     restart: unless-stopped
-    expose:
-      - "5000"
+    ports:
+      - "5000:5000"
     environment:
       - GOOGLE_API_KEY=${GOOGLE_API_KEY}
       - GEMINI_MODEL_NAME=${GEMINI_MODEL_NAME:-gemini-1.5-pro}
     volumes:
-      - ./api/temp_videos:/app/temp_videos
+      - api-videos:/app/temp_videos
     networks:
       - app-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
 
   frontend:
     build:
       context: ./frontend
       dockerfile: Dockerfile
     restart: unless-stopped
-    expose:
-      - "5757"
+    ports:
+      - "5757:5757"
     depends_on:
-      - api
+      api:
+        condition: service_started
     networks:
       - app-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5757"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    labels:
+      - "coolify.managed=true"
+
+volumes:
+  api-videos:
+    driver: local
 
 networks:
   app-network:
-    name: app-network
     driver: bridge

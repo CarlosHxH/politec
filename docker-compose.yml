@@ -6,8 +6,8 @@ services:
       context: ./api
       dockerfile: Dockerfile
     restart: unless-stopped
-    expose:
-      - "5000"
+    ports:
+      - "5000:5000"
     environment:
       - GOOGLE_API_KEY=${GOOGLE_API_KEY}
       - GEMINI_MODEL_NAME=${GEMINI_MODEL_NAME:-gemini-1.5-pro}
@@ -21,8 +21,11 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
     restart: unless-stopped
-    expose:
-      - "5757"
+    ports:
+      - "5757:5757"
+    environment:
+      - VITE_API_URL=https://apilaudoai.facilinova.online
+      - API_URL=https://apilaudoai.facilinova.online
     depends_on:
       - api
     networks:
